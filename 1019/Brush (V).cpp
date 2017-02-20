@@ -2,12 +2,6 @@
 
 using namespace std;
 
-#include <cstdio>
-#include <vector>
-#include <queue>
-
-using namespace std;
-
 typedef pair<int, int> ii;
 typedef vector<int> vi;
 typedef vector<ii> vii;
@@ -17,7 +11,7 @@ int p[100004];
 int main()
 {
 
-    int V,E,W,s,u,v,w,cs=1;
+    int V,E,W,s,u,v,w,cs=1,t;
 
     vector<vii>AdjList;
 
@@ -27,7 +21,7 @@ int main()
 
     while(test--)
     {
-        scanf("%d %d",&V,&E);
+        scanf("%d %d %d %d",&V,&E,&s,&t);
 
         AdjList.assign(V+3,vii());
 
@@ -38,20 +32,14 @@ int main()
 
             AdjList[u].push_back(ii(v,w));
             AdjList[v].push_back(ii(u,w));
-
-            //cout<<"Her"<<endl;
         }
 
-            //cout<<"Here"<<endl;
-
         vi dist(V+5,INF);
-        dist[1] = 0;
-
-        //cout<<"Here"<<endl;
+        dist[s] = 0;
 
         priority_queue< ii, vector<ii>, greater<ii> > pq;
 
-        pq.push(ii(0, 1));
+        pq.push(ii(0, s));
 
         while(!pq.empty())
         {
@@ -65,28 +53,21 @@ int main()
             for (int j = 0; j < (int)AdjList[u].size(); j++)
             {
                 ii v = AdjList[u][j];
-                // all outgoing edges from u
+
                 if (dist[u] + v.second < dist[v.first])
                 {
                     dist[v.first] = dist[u] + v.second;
-                    //printf("%d ", u);                // relax operation
-                    //cout<<v.first<<' '<<dist[v.first]<<endl;
+
                     pq.push(ii(dist[v.first], v.first));
                 }
             }
 
-
         }
-        //cout<<"Here"<<endl;
 
-        //cout<<dist[0]<<' '<<dist[1]<<' '<<dist[2]<<endl;
-
-
-        if(dist[V]==INF)
-            printf("Case %d: Impossible\n",cs++);
+        if(dist[t]==INF)
+            printf("Case #%d: unreachable\n",cs++);
         else
-            printf("Case %d: %d\n",cs++,dist[V]);
-
+            printf("Case #%d: %d\n",cs++,dist[t]);
 
     }
 
